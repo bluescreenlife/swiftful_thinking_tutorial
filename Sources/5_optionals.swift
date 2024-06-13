@@ -55,7 +55,6 @@ func checkIfUserIsPremium3() -> Bool {
 
     // if there is a value, let newValue equal that value
     if let newValue = userIsPremium {
-        print(newValue)
         return newValue
     } else {
         return false
@@ -63,4 +62,176 @@ func checkIfUserIsPremium3() -> Bool {
 
 }
 
-checkIfUserIsPremium3()
+// checkIfUserIsPremium3()
+
+// using guard -- validate a condition first, then continue
+// whereas if let entered a closure if a condition was met
+// failure entering a closure rather than success entering a closure
+
+func checkUser2() -> Bool {
+    guard let newValue = userIsPremium else {
+        return false
+    }
+
+    return newValue
+}
+
+// without creating new value
+func checkuser3() -> Bool {
+    guard let userIsPremium else {
+        return false
+    }
+
+    return userIsPremium
+}
+
+
+func checkUser4() -> Bool {
+    guard let hasValue = userIsPremium else {
+        return false
+    }
+
+    return hasValue
+}
+
+print(checkUser4())
+// *** 3 ways to unwrap optionals ***
+// - use nil coalescing, give a default value
+// - use if let, enter closure with new value
+// - use guard statement, continue if condition met
+
+
+// -------------------------------------------------------
+
+var userIsNew: Bool? = true
+var userCompletedOnboarding: Bool? = true
+var userFavoriteMovie: String? = nil
+
+func checkIfUserIsSetUp()-> Bool {
+
+    // newer Swift upgrade: don't need to create new variables when unwrapping - Swift will do it
+    if let userIsNew, let userCompletedOnboarding, let userFavoriteMovie {
+        // the above lets cannot be nil in order to get into this closure
+        // the above lets are not optional, thus can be accessed
+    
+        return getUserStatus(userIsNew: userIsNew, 
+                            userCompletedOnboarding: userCompletedOnboarding, 
+                            userFavoriteMovie: userFavoriteMovie) 
+                            } else {
+                                return false
+                            }
+}
+
+
+// using guard
+
+func checkIfUserIsSetUp2() -> Bool {
+    guard let userIsNew, let  userCompletedOnboarding, let userFavoriteMovie {
+        return false
+    }
+
+    return getUserStatus(userIsNew: userIsNew, 
+                            userCompletedOnboarding: userCompletedOnboarding, 
+                            userFavoriteMovie: userFavoriteMovie) {
+                            } else {
+                                return false
+                            }
+
+}
+
+func getUserStatus(userIsNew: Bool, userCompletedOnboarding: Bool, userFavoriteMovie: String) {
+    if userIsNew && userCompletedOnboarding {
+        return true
+    }
+
+    return false
+}
+
+// layered if-let -- avoid this if possible
+func checkIfUserIsSetUp3()-> Bool {
+
+    if let userIsNew {
+        // userIsNew == Bool
+
+        if let userCompletedOnboarding {
+            // userCompletedOnboarding == Bool
+
+            if let userFavoriteMovie {
+                // userFavoriteMovie == String
+
+                return getUserStatus(userIsNew: userIsNew, 
+                            userCompletedOnboarding: userCompletedOnboarding, 
+                            userFavoriteMovie: userFavoriteMovie)
+
+            } else {
+                // userFavoriteMovie = nil
+                return false
+            }
+
+        } else {
+            // userCompletedOnboarding == nil
+            return false
+        }
+
+    } else {
+        // userIsNew == nil
+        return false
+    }
+}
+
+
+// layered guard statement - cleaner code
+
+func checkIfUserIsSetUp4() -> Bool {
+    guard let userIsNew {
+        // do something
+        
+    } else {
+        return false
+    }
+
+    guard let userCompletedOnboarding {
+        // do something else
+        
+    } else {
+        return false
+    }
+
+    guard let userFavoriteMovie {
+        // do a third thing
+
+    } else {
+        return false
+    }
+
+    return getUserStatus(
+        userIsNew: userIsNew,
+        userCompletedOnboarding: userCompletedOnboarding,
+        userFavoriteMovie: userFavoriteMovie
+    )
+
+}
+
+
+// optional chaining
+
+func getUsername() -> String? {
+    return "username"
+}
+
+func getTitle() -> String {
+    return "title"
+}
+
+func getUserData() {
+    let username : String? = getUsername()
+    let usernameCount : Int = username?.count ?? 0// gets the count if username is not nil
+
+    let title: String = getTitle()
+    let titleCount = title.count // gets the count
+
+    // optional chaining - if username has a value, and first char has a value, return the value of isLowercase
+    let firstCharIsLower = username?.first?.isLowercase 
+}
+
+// review: unwrapping optionals: nil coalescing - if let - guard statements
